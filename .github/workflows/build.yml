@@ -1,0 +1,20 @@
+name: Build
+on: [push]
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deps
+        working-directory: pdfDecompress
+        run: pip install pyinstaller
+      - name: Build exe
+        working-directory: pdfDecompress
+        run: pyinstaller --onefile bulk_pdf_zipper.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exe
+          path: pdfDecompress/dist/   
